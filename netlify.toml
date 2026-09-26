@@ -1,0 +1,48 @@
+# Netlify build configuration.
+#
+# The site is a zero-build static bundle. There is no bundler, no package.json
+# and no test step: the publish directory is served as-is.
+#
+# The repository root cannot be the publish directory because it also holds the
+# FastAPI service, the docs, the video sources and the package workspace. Only
+# web/ is meant to be public.
+
+[build]
+  publish = "web"
+  command = ""
+
+# Content-addressed cache busting already lives in the markup (styles.css?v=3,
+# script.js?v=2). Keep HTML uncached so a deploy is picked up immediately, and
+# let the assets revalidate on every visit.
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/styles.css"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/script.js"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Baseline security headers. The page loads only Google Fonts and inline SVG,
+# so the policy can stay tight. 'unsafe-inline' covers the inline <svg> and
+# style attributes; there is no inline <script>.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'"
+
+# The page is a single document; unknown paths resolve to it.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
