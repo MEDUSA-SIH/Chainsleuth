@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ChainSleuth: ranked VASP candidates | SIH26182</title>
+<meta name="description" content="ChainSleuth traces suspect wallets to ranked VASP candidates across six supported chains, with two independent scores, plain-language evidence, and a SAHYOG request handoff. SIH26182 · MHA / I4C.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=3">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230A0A0A'/%3E%3Cpath d='M9 21.5 13.5 9h2.6l-3 8.4h5.2l1.1-3h2.6l-1.9 5.4H9z' fill='white'/%3E%3Ccircle cx='22.5' cy='21' r='1.6' fill='white'/%3E%3C/svg%3E">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="#top" aria-label="ChainSleuth home">
+      <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#0A0A0A"/><path d="M9 21.5 13.5 9h2.6l-3 8.4h5.2l1.1-3h2.6l-1.9 5.4H9z" fill="#fff"/><circle cx="22.5" cy="21" r="1.6" fill="#fff"/></svg>
+      <span class="brand-word"><strong>chain</strong>sleuth</span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="#how"><b>01</b>How it works</a>
+      <a href="#chains"><b>02</b>Chains</a>
+      <a href="#evidence"><b>03</b>Evidence</a>
+      <a href="#sahyog"><b>04</b>SAHYOG</a>
+    </nav>
+    <div class="topbar-actions">
+      <a class="btn btn-ghost btn-sm" href="https://github.com/MEDUSA-SIH/Chainsleuth" target="_blank" rel="noopener">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+        GitHub
+      </a>
+      <a class="btn btn-solid btn-sm" href="https://github.com/MEDUSA-SIH/Chainsleuth/blob/main/docs/development.md" target="_blank" rel="noopener">Setup</a>
+      <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="nav" aria-label="Menu">
+        <span></span><span></span>
+      </button>
+    </div>
+  </div>
+  <span class="scroll-progress" id="scrollProgress" aria-hidden="true"></span>
+</header>
+
+<main id="main">
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <div class="wrap hero-inner">
+    <p class="eyebrow">SIH26182&nbsp;&nbsp;·&nbsp;&nbsp;MHA–I4C&nbsp;&nbsp;·&nbsp;&nbsp;BLOCKCHAIN &amp; CYBERSECURITY</p>
+    <h1>Trace a suspect wallet<br>to a ranked VASP candidate.</h1>
+    <div class="hero-diagram" aria-hidden="true">
+      <svg viewBox="0 0 560 150" role="presentation">
+        <line class="flow-line d2" x1="98" y1="75" x2="330" y2="38" stroke="#0A0A0A" stroke-width="1.5" stroke-dasharray="5 4"/>
+        <line x1="98" y1="75" x2="330" y2="112" stroke="#C9C7C3" stroke-width="1.5" stroke-dasharray="5 4"/>
+        <g class="node n1">
+          <circle cx="70" cy="75" r="26" fill="#0A0A0A"/>
+          <circle cx="70" cy="75" r="6" fill="#F7F6F6"/>
+        </g>
+        <g class="node n3">
+          <circle class="pulse-ring" cx="330" cy="38" r="16" fill="none" stroke="#0A0A0A" stroke-width="1.5"/>
+          <circle cx="330" cy="38" r="16" fill="#fff" stroke="#0A0A0A" stroke-width="1.5"/>
+          <circle cx="330" cy="38" r="4" fill="#0A0A0A"/>
+        </g>
+        <g class="node n4">
+          <circle cx="330" cy="112" r="16" fill="#fff" stroke="#C9C7C3" stroke-width="1.5"/>
+          <circle cx="330" cy="112" r="4" fill="#C9C7C3"/>
+        </g>
+        <rect x="392" y="46" width="118" height="58" rx="7" fill="#0A0A0A"/>
+        <line class="flow-line d3" x1="346" y1="38" x2="392" y2="62" stroke="#0A0A0A" stroke-width="1.5" stroke-dasharray="5 4"/>
+        <line x1="346" y1="112" x2="392" y2="88" stroke="#C9C7C3" stroke-width="1.5" stroke-dasharray="5 4"/>
+        <text x="70" y="122" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" letter-spacing="1.5" fill="#7C7B78">SUSPECT</text>
+        <text x="214" y="44" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" letter-spacing="1.5" fill="#7C7B78">1 TRANSFER</text>
+        <text x="451" y="72" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" letter-spacing="1.5" fill="#fff">EXCHANGE</text>
+        <text x="451" y="86" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" letter-spacing="1" fill="#A9A7A3">78 · HIGH</text>
+      </svg>
+      <p class="hero-legend mono sm">SAMPLE CASE 1 · SUSPECT → 1 TRANSFER → EXCHANGE · SCORE 78 · HIGH</p>
+    </div>
+    <p class="lede">ChainSleuth traces a suspect wallet across six supported chains, ranks the nearest virtual asset service provider (VASP) candidate with its supporting evidence, and prepares the request handoff through SAHYOG.</p>
+    <div class="cta-row">
+      <a class="btn btn-solid btn-lg" href="https://github.com/MEDUSA-SIH/Chainsleuth/blob/main/docs/development.md" target="_blank" rel="noopener">Setup guide</a>
+      <a class="btn btn-outline btn-lg" href="https://github.com/MEDUSA-SIH/Chainsleuth" target="_blank" rel="noopener">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+        View on GitHub
+      </a>
+    </div>
+    <p class="micro-note">LIVE PROVIDERS VIA API KEYS&nbsp;&nbsp;·&nbsp;&nbsp;SYNTHETIC DATASET BY DEFAULT&nbsp;&nbsp;·&nbsp;&nbsp;NO KEYS NEEDED TO TRY IT</p>
+  </div>
+</section>
+
+<!-- ============ STATS ============ -->
+<section class="strip" aria-label="Key facts">
+  <div class="wrap stats">
+    <div class="stat"><strong>6</strong><span class="mono">CHAINS, ONE WORKFLOW</span></div>
+    <div class="stat"><strong>4</strong><span class="mono">REVIEW STEPS</span></div>
+    <div class="stat"><strong>8</strong><span class="mono">PIPELINE STAGES</span></div>
+    <div class="stat"><strong>2</strong><span class="mono">SCORES, NEVER BLENDED</span></div>
+  </div>
+</section>
+
+<!-- ============ HOW ============ -->
+<section class="section" id="how">
+  <div class="wrap">
+    <p class="eyebrow left">01 · HOW IT WORKS</p>
+    <h2>From suspect address<br>to a prepared request.</h2>
+    <p class="sub">Four review steps an investigator can follow.</p>
+    <ol class="timeline">
+      <li>
+        <span class="ghost" aria-hidden="true">01</span>
+        <span class="rail" aria-hidden="true"><i></i></span>
+        <div class="t-entry">
+          <span class="stage-chip mono">MAP THE MONEY TRAIL</span>
+          <h3>Trace the graph</h3>
+          <p>Follows transfers outward step by step. High-degree hub addresses are filtered out before anything is scored.</p>
+        </div>
+      </li>
+      <li>
+        <span class="ghost" aria-hidden="true">02</span>
+        <span class="rail" aria-hidden="true"><i></i></span>
+        <div class="t-entry">
+          <span class="stage-chip mono">DISTANCE, THEN SUPPORT</span>
+          <h3>Score it twice</h3>
+          <p>How close a match is, and how well supported it is, are scored independently and never blended. A mixer hit stops attribution and drops confidence to zero.</p>
+        </div>
+      </li>
+      <li>
+        <span class="ghost" aria-hidden="true">03</span>
+        <span class="rail" aria-hidden="true"><i></i></span>
+        <div class="t-entry">
+          <span class="stage-chip mono">EVERY RESULT EXPLAINED</span>
+          <h3>Explain in plain language</h3>
+          <p>Every candidate includes an evidence tier and a plain-language explanation of what was found and how it was scored.</p>
+        </div>
+      </li>
+      <li>
+        <span class="ghost" aria-hidden="true">04</span>
+        <span class="rail" aria-hidden="true"><i></i></span>
+        <div class="t-entry">
+          <span class="stage-chip mono">SAHYOG HANDOFF</span>
+          <h3>Route via SAHYOG</h3>
+          <p>An analyst reviews the result and prepares the disclosure or freeze request, routed through SAHYOG to the legal entity holding the case.</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ CHAINS ============ -->
+<section class="section alt" id="chains">
+  <div class="wrap">
+    <p class="eyebrow left">02 · CHAINS SUPPORTED</p>
+    <h2>Six supported chains. One workflow.</h2>
+    <p class="sub">Each chain follows the same path from suspect wallet to ranked VASP candidate. Providers are selected by configuration, so live chain access uses API keys and endpoints supplied in the environment; the bundled synthetic dataset keeps the same path reproducible without keys.</p>
+    <ul class="chain-grid">
+      <li><span class="mono">BTC</span><strong>Bitcoin</strong><em>grouped by owner</em></li>
+      <li><span class="mono">ETH</span><strong>Ethereum</strong><em>Ethereum transfers</em></li>
+      <li><span class="mono">TRX</span><strong>Tron</strong><em>high-throughput transfers</em></li>
+      <li><span class="mono">BNB</span><strong>BNB Chain</strong><em>works like Ethereum</em></li>
+      <li><span class="mono">SOL</span><strong>Solana</strong><em>high-speed transfers</em></li>
+      <li><span class="mono">MATIC</span><strong>Polygon</strong><em>built on Ethereum</em></li>
+    </ul>
+    <p class="mono dim sm tight">SAMPLE ADDRESS TYPES: VASP DEPOSIT · MIXER · BRIDGE</p>
+  </div>
+</section>
+
+<!-- ============ EVIDENCE ============ -->
+<section class="section" id="evidence">
+  <div class="wrap">
+    <p class="eyebrow left">03 · EVIDENCE MODEL</p>
+    <h2>Two numbers.<br>Never blended.</h2>
+    <p class="sub">Proximity answers “how close”. Confidence answers “how well supported”. A near candidate with thin evidence stays flagged as uncertain. The confidence score is an uncalibrated average of six signals — not a probability, an identity finding, or a legal conclusion.</p>
+    <div class="scale" role="img" aria-label="Confidence scale from 0 to 100. Medium starts at 40, high starts at 70. A mixer hit sets confidence to zero.">
+      <div class="scale-track" aria-hidden="true">
+        <span class="scale-fill score-78"></span>
+        <span class="scale-tick tick-40"></span>
+        <span class="scale-tick tick-70"></span>
+        <span class="scale-marker marker-78"></span>
+      </div>
+      <div class="scale-labels" aria-hidden="true">
+        <span class="mono sm">0 LOW</span>
+        <span class="mono sm">40 MEDIUM</span>
+        <span class="mono sm">70 HIGH</span>
+        <span class="mono sm">100</span>
+      </div>
+      <p class="mono sm">SAMPLE SCORE 78 · HIGH · MIXER HIT SETS CONFIDENCE TO 0</p>
+    </div>
+    <dl class="glossary">
+      <div><dt>Evidence tier</dt><dd>Relative match strength, from a direct deposit at Tier 1 to a weaker clue at Tier 4.</dd></div>
+      <div><dt>Label agreement</dt><dd>Whether independent exchange labels agree on the owner cluster.</dd></div>
+      <div><dt>Address reuse</dt><dd>Funds landing on a reused exchange deposit address count as a supporting signal.</dd></div>
+      <div><dt>Cluster consistency</dt><dd>Whether the path stays inside one owner cluster.</dd></div>
+      <div><dt>Path integrity</dt><dd>Each hop must have a backing transaction; a mixer hit stops attribution and broken cross-chain paths are flagged.</dd></div>
+      <div><dt>Freshness</dt><dd>Recent activity counts more; trails older than 90 days lose weight.</dd></div>
+    </dl>
+  </div>
+</section>
+
+<!-- ============ SAHYOG ============ -->
+<section class="section alt" id="sahyog">
+  <div class="wrap">
+    <p class="eyebrow left">04 · SAHYOG HANDOFF</p>
+    <h2>Prepare the lawful request<br>for the relevant entity.</h2>
+    <p class="sub">The SAHYOG gateway sits behind a single adapter interface, isolated so the rest of the pipeline is unaffected. Its API contract is not public, so the interface is defined and the routing is left to SAHYOG once I4C releases it.</p>
+    <ol class="sahyog">
+      <li class="reveal"><span class="mono">IN</span><p>A suspect wallet address is submitted, from SAHYOG intake or the API directly.</p></li>
+      <li class="reveal"><span class="mono">TRACE</span><p>The engine traces the transfers, ranks the nearest VASP candidate, and attaches the evidence.</p></li>
+      <li class="reveal"><span class="mono">OUT</span><p>The result is packaged as an outbound message for SAHYOG, which routes it onward to the legal entity holding the case.</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ FINAL CTA ============ -->
+<section class="final">
+  <div class="wrap final-inner">
+    <h2>For investigators tracing a wallet<br>to a ranked VASP candidate.</h2>
+    <div class="cta-row">
+      <a class="btn btn-solid btn-lg" href="https://github.com/MEDUSA-SIH/Chainsleuth" target="_blank" rel="noopener">Get the code</a>
+      <a class="btn btn-outline btn-lg" href="#how">How it works</a>
+    </div>
+    <p class="micro-note">SIH 2026 · PROBLEM STATEMENT SIH26182 · TEAM MEDUSA</p>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-inner">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <a class="brand" href="#top" aria-label="ChainSleuth home">
+          <svg width="28" height="28" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#0A0A0A"/><path d="M9 21.5 13.5 9h2.6l-3 8.4h5.2l1.1-3h2.6l-1.9 5.4H9z" fill="#fff"/><circle cx="22.5" cy="21" r="1.6" fill="#fff"/></svg>
+          <span class="brand-word brand-lg"><strong>chain</strong>sleuth</span>
+        </a>
+        <p class="foot-tag">From suspect wallet to a ranked VASP candidate and a prepared SAHYOG handoff.</p>
+        <p class="mono dim sm foot-built">BUILT BY <strong>TEAM MEDUSA</strong> · BSCA, DELHI SKILL AND ENTREPRENEURSHIP UNIVERSITY, BHAI PARMANAND CAMPUS</p>
+      </div>
+      <div class="foot-cols">
+        <nav aria-label="Product">
+          <span class="mono dim sm">PRODUCT</span>
+          <a href="#how">How it works</a>
+          <a href="#chains">Chains</a>
+          <a href="#evidence">Evidence</a>
+          <a href="#sahyog">SAHYOG</a>
+        </nav>
+        <nav aria-label="Project">
+          <span class="mono dim sm">PROJECT</span>
+          <a href="https://github.com/MEDUSA-SIH/Chainsleuth" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://github.com/MEDUSA-SIH/Chainsleuth/blob/main/docs/development.md" target="_blank" rel="noopener">Setup guide</a>
+          <a href="https://github.com/MEDUSA-SIH/Chainsleuth/blob/main/docs/contracts.md" target="_blank" rel="noopener">API contracts</a>
+          <a href="https://github.com/MEDUSA-SIH/Chainsleuth/blob/main/docs/architecture.md" target="_blank" rel="noopener">Architecture</a>
+        </nav>
+      </div>
+    </div>
+    <div class="foot-base foot-base-center">
+      <p class="mono dim sm">© <span id="year">2026</span> · PROPRIETARY · SIH EVALUATION CONTEXT</p>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js?v=2"></script>
+</body>
+</html>
