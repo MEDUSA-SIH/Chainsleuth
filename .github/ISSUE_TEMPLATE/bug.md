@@ -35,7 +35,6 @@ What actually happened. Include stack traces, logs and screenshots.
 - `.env` (redacted): which toggles are on (`DEMO_MODE`, provider flags,
   …)?
 
-## Work package
+## Affected area
 
-If you know which work package from `docs/work-packages.md` this
-touches, mention it here.
+If you know which area of the codebase this touches (see `.github/CODEOWNERS`), mention it here.
