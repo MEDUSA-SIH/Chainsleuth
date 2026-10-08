@@ -1,4 +1,4 @@
-# SIH26182 – Public Interface Contracts
+# SIH26182: Public Interface Contracts
 
 This document **freezes** the public interfaces that neighbouring teams
 will code against. Anything listed below is stable for the current
@@ -6,14 +6,14 @@ minor version. Breaking changes require a `BREAKING CHANGE:` footer in
 the commit AND a heads-up in `#dev`.
 
 > **Versioning rule:**
-> - Adding optional parameters / methods = minor version bump (`0.1.x → 0.2.0`).
-> - Removing or renaming = major bump (`0.x.y → 1.0.0`) AND migration notes.
+> - Adding optional parameters / methods = minor version bump (`0.1.x` to `0.2.0`).
+> - Removing or renaming = major bump (`0.x.y` to `1.0.0`) AND migration notes.
 
 ---
 
 ## 1. `app.providers.base.BlockchainProvider`
 
-Phase 20.3 — every chain-specific provider MUST subclass this ABC.
+Phase 20.3: every chain-specific provider MUST subclass this ABC.
 
 ```python
 class BlockchainProvider(ABC):
@@ -53,7 +53,7 @@ class BlockchainProvider(ABC):
 
 ## 2. `app.providers.canonical.CanonicalTransaction`
 
-Phase 9 — chain-agnostic tx shape consumed by every downstream layer.
+Phase 9: chain-agnostic tx shape consumed by every downstream layer.
 
 ```python
 @dataclass(slots=True, frozen=True)
@@ -76,7 +76,7 @@ class CanonicalTransaction:
 - `amount` is **always** in human (post-decimal) units. Callers must NOT
   apply additional scaling.
 - `fee` is always denominated in the chain's native asset.
-- `raw` is opaque — schema is provider-specific but MUST be JSON
+- `raw` is opaque. The schema is provider-specific but MUST be JSON
   serialisable.
 - The dataclass is `slots=True, frozen=True`; do NOT mutate instances.
 
@@ -84,7 +84,7 @@ class CanonicalTransaction:
 
 ## 3. `app.attribution.engine.AttributionEngine`
 
-Phase 10 — orchestrator for the eight-stage pipeline.
+Phase 10: orchestrator for the eight-stage pipeline.
 
 ```python
 class AttributionEngine:
@@ -101,9 +101,9 @@ class AttributionResult:
 **Contract:**
 
 - `run` is the only public entry point. The eight stages
-  (`discovery → traversal → filtering → evidence → scoring → ranking →
+  (`discovery` to `traversal` to `filtering` to `evidence` to `scoring` to `ranking` to
   explainability`) are private sub-modules and may change without
-  notice — consumers MUST NOT import them directly.
+  notice. Consumers MUST NOT import them directly.
 - `max_hops` and `per_chain_budget` clamp the resource budget. Engines
   MUST raise `AttributionError` when the budget is exceeded.
 - `AttributionResult` is **stable** for `0.1.x`. `rankings` is a list of
@@ -114,7 +114,7 @@ class AttributionResult:
 
 ## 4. `app.graph.store.GraphStore`
 
-Phase 6 / Phase 11 — multi-chain in-process graph store.
+Phase 6 / Phase 11: multi-chain in-process graph store.
 
 ```python
 class GraphStore:
@@ -144,7 +144,7 @@ class GraphStore:
 
 ## 5. `app.sahyog.gateway.SahyogGateway`
 
-Phase 7 — outbound adapter to the SAHYOG inter-agency network.
+Phase 7: outbound adapter to the SAHYOG inter-agency network.
 
 ```python
 class SahyogGateway(ABC):
@@ -166,12 +166,12 @@ class SahyogGateway(ABC):
 
 ## 6. `app.config.Settings`
 
-Phase 25 — central configuration object.
+Phase 25: central configuration object.
 
 **Contract:**
 
 - All settings come from environment variables (or `.env` in dev).
-  Missing required values use documented defaults — `DEMO_MODE` defaults
+  Missing required values use documented defaults. `DEMO_MODE` defaults
   to `true`.
 - Computed fields (`database_url`, `database_url_sync`, `redis_url`,
   `cors_allow_origins_list`) MUST be treated as opaque strings; do not
@@ -213,7 +213,7 @@ Each router exposes a stable URL surface under `/api/v1`:
 
 ---
 
-## 8. SQLAlchemy ORM models (Phase 8)
+## 8. SQLAlchemy ORM models
 
 Tables registered in `app.db.models.*` are stable:
 
@@ -241,28 +241,16 @@ investigations, reports, api_requests, audit_events
 
 ---
 
-## 10. Cross-package shared types (`packages.common`)
+## 10. Auth contract notes
 
-Stable exports:
-
-```python
-from common.types import ChainCode, ConfidenceWeights, InvestigationSeed
-```
-
-These mirror the `Settings` enum / tuple values and MUST stay in sync.
-
----
-
-## 11. Auth contract notes
-
-Phase 25 — authentication, RBAC and password-reset behaviour.
+Authentication, RBAC and password-reset behaviour.
 
 **Roles:** every investigator holds exactly one of the canonical roles:
 
-- `investigator` — can use the attribution workflow and read their own
+- `investigator`: can use the attribution workflow and read their own
   profile.
-- `reviewer` — can additionally review / approve investigations.
-- `admin` — full access, including the `/admin/investigators` CRUD and
+- `reviewer`: can additionally review / approve investigations.
+- `admin`: full access, including the `/admin/investigators` CRUD and
   reset-password operations.
 
 An invalid role is rejected at the schema layer (Pydantic `Literal`),
@@ -272,9 +260,9 @@ so the set of roles is stable.
 `Authorization: Bearer <access_token>`. The access token carries three
 claims relevant to authz:
 
-- `sub` — the investigator id (UUID).
-- `role` — the current role at issue time.
-- `token_version` — an integer that starts at `1` and increments on any
+- `sub`: the investigator id (UUID).
+- `role`: the current role at issue time.
+- `token_version`: an integer that starts at `1` and increments on any
   credential / role change. The dependency re-fetches the investigator
   from the DB on every request and rejects the token if
   `token_version` no longer matches, so role changes and password

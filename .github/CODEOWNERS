@@ -3,8 +3,7 @@
 # The last matching pattern wins. People listed are auto-requested as
 # reviewers when a PR touches those files.
 #
-# Update this file when ownership changes. The current owners reflect
-# the work-package split documented in docs/work-packages.md.
+# Update this file when ownership changes.
 
 # --- Default ownership: any committer may review ---------------------------
 *                                   @MEDUSA-SIH/maintainers

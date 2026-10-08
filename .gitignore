@@ -66,3 +66,19 @@ data/synthetic/*.parquet
 
 # Alembic compiled cache
 api/alembic/versions/__pycache__/
+
+# Local-only artifacts (ignored as a whole).
+# Kept under .private/ so this file never lists private filenames.
+.private/
+
+# Internal working documents (submission drafts, superseded specs,
+# agent plans). Kept local-only; never listed by filename.
+.sih/
+
+# Video build outputs (directories only — no filenames listed)
+video/mp3/
+video/svg/
+video/public/assets/*.svg
+
+# isolated agent workspaces
+.worktrees/
