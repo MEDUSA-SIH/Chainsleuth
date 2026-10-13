@@ -17,7 +17,7 @@ Describe the proposed change at a high level.
 ## Affected areas
 
 Which folders / public interfaces does this touch? (See
-`docs/work-packages.md` and `docs/contracts.md`.)
+`.github/CODEOWNERS` and `docs/contracts.md`.)
 
 - [ ] `api/app/providers/`
 - [ ] `api/app/attribution/`

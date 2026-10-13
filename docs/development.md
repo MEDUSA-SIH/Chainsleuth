@@ -1,4 +1,4 @@
-# SIH26182 – Development guide
+# SIH26182: Development Guide
 
 ## Prerequisites
 
@@ -64,7 +64,7 @@ is reachable.
 
 ### Hit the smoke attribution endpoint
 
-Case 1 — direct VASP deposit:
+Case 1, a direct VASP deposit:
 
 ```bash
 curl -X POST http://localhost:8000/api/v1/attribution/run \
@@ -85,14 +85,14 @@ Expected response (truncated):
       "confidence_score": 77.5,
       "confidence_band": "high",
       "evidence_tier": 1,
-      "evidence_tier_label": "Tier 1 — Direct VASP deposit label",
+      "evidence_tier_label": "Tier 1: direct VASP deposit label",
       "explanation": "Terminal wallet is tagged as a deposit of 'vasp_alpha' (VASP Alpha deposit). …"
     }
   ]
 }
 ```
 
-Case 5 — mixer stops attribution:
+Case 5, a mixer stops attribution:
 
 ```bash
 curl -X POST http://localhost:8000/api/v1/attribution/run \
@@ -112,7 +112,7 @@ Expected response (truncated):
       "confidence_score": 0.0,
       "confidence_band": "low",
       "evidence_tier": 99,
-      "explanation": "Funds reached a known mixer (mixer_demo_a); attribution stops here — funds through a mixer cannot be reliably traced. …"
+      "explanation": "Funds reached a known mixer (mixer_demo_a); attribution stops here because funds through a mixer cannot be reliably traced. …"
     }
   ]
 }
@@ -136,10 +136,10 @@ exercises all 8 cases end-to-end via `TestClient`.
 
 ## Scoring design
 
-The engine exposes two **independent** numbers per candidate — they are
+The engine exposes two **independent** numbers per candidate. They are
 never blended into a single ranking score.
 
-### `proximity_rank` — lower is closer
+### `proximity_rank`, lower is closer
 
 A weighted-graph distance from suspect to terminal. Components:
 
@@ -148,35 +148,35 @@ A weighted-graph distance from suspect to terminal. Components:
 | `base_hop_cost`        | 1.0 per hop    | always                                    |
 | `mixing_penalty`       | 2.0            | path crosses a labelled mixer             |
 | `bridge_penalty`       | 1.0            | path crosses a bridge contract            |
-| `time_decay_penalty`   | 0–2.0          | last_seen_at older than 90 days           |
-| `fan_out_penalty`      | 0–2.0          | reserved for future use                  |
+| `time_decay_penalty`   | 0 to 2.0       | last_seen_at older than 90 days           |
+| `fan_out_penalty`      | 0 to 2.0       | reserved for future use                  |
 
 The sum is the rank. Stage G sorts ascending.
 
-### `confidence_score` — 0..100
+### `confidence_score`, 0 to 100
 
 Equal-weight (1/6) combination of:
 
-- `evidence_tier_score`       — Tier 1 → 1.0, Tier 2 → 0.8, Tier 3 → 0.55, Tier 4 → 0.3, none → 0
-- `label_source_agreement`    — 1.0 if the dataset tags the terminal with a label
-- `address_reuse_signal`      — `min(1.0, hops / 4)`
-- `cluster_consistency`       — 1.0 for VASP-tagged terminal with no mixer hit
-- `path_integrity`            — 1.0 if every hop is backed by a CanonicalTransaction
-- `evidence_freshness`        — 1.0 fresh, 0.7 (<1 year), 0.4 (>1 year), 0.5 unknown
+- `evidence_tier_score`: Tier 1 gives 1.0, Tier 2 gives 0.8, Tier 3 gives 0.55, Tier 4 gives 0.3, none gives 0
+- `label_source_agreement`: 1.0 if the dataset tags the terminal with a label
+- `address_reuse_signal`: `min(1.0, hops / 4)`
+- `cluster_consistency`: 1.0 for VASP-tagged terminal with no mixer hit
+- `path_integrity`: 1.0 if every hop is backed by a CanonicalTransaction
+- `evidence_freshness`: 1.0 fresh, 0.7 under a year, 0.4 over a year, 0.5 unknown
 
 The sum × 100 is the score. Bands:
 
 | Band    | Range    |
 |---------|----------|
 | high    | ≥ 70     |
-| medium  | 40–69    |
+| medium  | 40 to 69 |
 | low     | < 40     |
 
 ### Mixer handling
 
 Any candidate that hits a labelled mixer gets
 `confidence_score = 0.0` and `confidence_band = "low"` regardless of the
-component weights. Mixer hits do NOT contribute to ranking — they
+component weights. Mixer hits do NOT contribute to ranking. They
 exist as evidence only.
 
 ### Evidence tiers
@@ -245,11 +245,11 @@ docker compose exec api pytest tests/unit -k test_health
 
 ## Folder conventions
 
-- **Absolute imports inside `api`** – always `from app.xxx import …`.
-- **Phase references** – every public class/function must have a
+- **Absolute imports inside `api`**: always `from app.xxx import …`.
+- **Phase references**: every public class/function must have a
   docstring referencing the relevant spec phase.
-- **No secrets in source** – environment variables only.
-- **DEMO_MODE first** – new features must respect the offline demo
+- **No secrets in source**: environment variables only.
+- **DEMO_MODE first**: new features must respect the offline demo
   pathway (see `app/providers/demo.py`).
 
 ## Auth (WP-28)
@@ -261,7 +261,7 @@ role changes / password resets revoke outstanding tokens immediately.
 
 ### Create an admin (bootstrap)
 
-There is no public self-registration — create the first admin from the
+There is no public self-registration, so create the first admin from the
 CLI against the configured database:
 
 ```bash
@@ -301,7 +301,7 @@ curl -s -X POST http://localhost:8000/api/v1/auth/change-password \
 ```
 
 Changing the password bumps `token_version`, so the old JWT is now
-invalid — log in again to get a fresh one.
+invalid. Log in again to get a fresh one.
 
 ### Password-reset demo flow
 

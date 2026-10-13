@@ -1,7 +1,7 @@
 # Contributing to SIH26182
 
 Welcome! This document explains how the team collaborates on the
-**SIH26182 – VASP Wallet Attribution** codebase. The goal is to make it
+**SIH26182, VASP Wallet Attribution** codebase. The goal is to make it
 easy for multiple developers to work in parallel without stepping on
 each other.
 
@@ -11,7 +11,7 @@ each other.
 
 | Branch          | Purpose                                                  |
 |-----------------|----------------------------------------------------------|
-| `main`          | Stable. **Default branch — all PRs target `main`. PR only.** |
+| `main`          | Stable. This is the default branch, and all PRs target `main`. PR only. |
 | `feature/<x>`   | New functionality. Branched from `main`.                |
 | `fix/<issue>`   | Bug fixes. Branched from `main`.                         |
 | `chore/<x>`     | Tooling, docs, refactors with no behaviour change.       |
@@ -19,13 +19,13 @@ each other.
 | `hotfix/<x>`    | Emergency fix to `main`.                                  |
 
 > **Note:** there is no `develop` branch in this repo. Older revisions of
-> this document mentioned one — ignore them. `main` is the only
+> this document mentioned one, so ignore them. `main` is the only
 > integration branch.
 
 > **Naming convention:**
-> - `feature/<short-kebab-name>` — e.g. `feature/eth-provider-live`
-> - `fix/<issue-number>-<short-desc>` — e.g. `fix/142-attribution-stuck`
-> - `chore/<short-desc>` — e.g. `chore/update-ruff`
+> - `feature/<short-kebab-name>`, e.g. `feature/eth-provider-live`
+> - `fix/<issue-number>-<short-desc>`, e.g. `fix/142-attribution-stuck`
+> - `chore/<short-desc>`, e.g. `chore/update-ruff`
 
 > **Branch protection (recommended GitHub settings):**
 > - `main`: require pull request reviews, dismiss stale
@@ -55,8 +55,7 @@ each other.
    ```
 5. Wait for CI to pass, request review from at least one teammate, address
    feedback, then merge (squash by default).
-6. When your work is complete, flip your row in `docs/work-packages.md`
-   from ⬜ (unclaimed) to ✅ (done) — then commit and push.
+6. After review approval, squash-merge into `main` and delete your branch.
 
 ---
 
@@ -99,12 +98,10 @@ Every PR must:
 - [ ] Be **squash-merged** (keeps history tidy)
 - [ ] Pass `ci` (lint + import smoke + tests)
 - [ ] Update docs if behaviour changed (`docs/*.md`)
-- [ ] Stay within the assigned **work package** (see
-      `docs/work-packages.md`)
-- [ ] Touch the **Work Package matrix** in `docs/work-packages.md` only
-      after coordination with the owning teammate
+- [ ] Keep the PR focused on one area of the codebase
+- [ ] Get approval from the path CODEOWNER before touching files outside that area
 
-> Use `.github/PULL_REQUEST_TEMPLATE.md` – it fills in the checklist
+> Use `.github/PULL_REQUEST_TEMPLATE.md`, which fills in the checklist
 > automatically.
 
 ---
@@ -113,13 +110,13 @@ Every PR must:
 
 ```bash
 git clone <repo-url>
-cd vasp-wallet-attribution
+cd Chainsleuth
 ./scripts/bootstrap.sh
 ```
 
 That script:
 
-1. Copies `.env.example` → `.env` (if missing).
+1. Copies `.env.example` to `.env` (if missing).
 2. Pulls base Docker images.
 3. Starts the stack via `docker compose up -d --build`.
 4. Waits for `/api/v1/health` to respond.
@@ -155,18 +152,17 @@ Now `ruff` and the other hooks will fire on every commit.
 
 - **Python 3.12** (target). Ruff + `ruff format` is the source of truth.
 - **Absolute imports** inside `api` (`from app.xxx import ...`).
-- **Docstrings** must reference the relevant SIH26182 phase.
+- **Docstrings** should say what the code does and which area it belongs to.
 - **No secrets** in source. Use `.env`, never commit it.
 - **Tests** live in `api/tests/`. Mirror the module structure.
 - **Public interfaces** (see `docs/contracts.md`) must not change without
-  a `BREAKING CHANGE:` footer in the commit AND a heads-up in `#dev`.
+  a `BREAKING CHANGE:` footer in the commit AND a heads-up in the team channel.
 
 ---
 
-## 8. Work packages & ownership
+## 8. Code ownership
 
-See `docs/work-packages.md` for the current split. Pick an unassigned row,
-claim it, and link your branch in the matrix.
+`.github/CODEOWNERS` lists the owning team for each path. The listed owners are auto-requested as reviewers when a PR touches their files. If your change spans multiple owned areas, talk to each owner first, or split the work into one PR per area.
 
 ---
 
@@ -174,14 +170,14 @@ claim it, and link your branch in the matrix.
 
 Use the appropriate issue template in `.github/ISSUE_TEMPLATE/`:
 
-- `bug.md` – something is broken.
-- `feature.md` – new functionality proposal.
-- `chore.md` – tooling, deps, refactor.
+- `bug.md`: something is broken.
+- `feature.md`: new functionality proposal.
+- `chore.md`: tooling, deps, refactor.
 
 ---
 
 ## 10. Getting help
 
-- `#dev` Slack channel (or whatever your team uses).
+- The team chat channel.
 - Open a `question.md` issue.
-- Ping a CODEOWNER (`/.github/CODEOWNERS`).
+- Ping a CODEOWNER (`.github/CODEOWNERS`).
